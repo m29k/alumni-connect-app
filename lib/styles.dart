@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 const Color background_color1 = Colors.white;
-const Color background_color2 = Colors.lightBlue;
+// const Color background_color2 = Colors.blueGrey;
+get background_color2 => Colors.grey[200];
+get background_color3 => Colors.cyan[100];
 
 const Color accent_color1 = Colors.teal;
 const Color accent_color2 = Colors.red;

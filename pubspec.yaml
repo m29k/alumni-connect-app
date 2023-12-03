@@ -71,6 +71,9 @@ dependencies:
   # For storing images into gallery
   gallery_saver: ^2.3.2
 
+  dots_indicator: ^2.1.0
+  lottie: ^2.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

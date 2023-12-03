@@ -74,7 +74,19 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
         child: Scaffold(
           //app bar
           appBar: AppBar(
-            // leading: const Icon(CupertinoIcons.home),
+            leading: const Icon(CupertinoIcons.bubble_left_bubble_right_fill),
+            // backgroundColor: background_color1,
+            backgroundColor: accent_color1.withOpacity(0.3),
+            shape: const Border(
+              bottom: BorderSide(
+                width: 1,
+                color: accent_color1,
+              ),
+              top: BorderSide(
+                width: 1,
+                color: accent_color1,
+              ),
+            ),
             title: _isSearching
                 ? TextField(
                     decoration: const InputDecoration(
@@ -113,31 +125,42 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
 
               //more features button
               IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ProfileScreen(user: APIs.me)));
-                  },
-                  icon: const Icon(Icons.more_vert))
+                onPressed: () {
+                  _addChatUserDialog();
+                },
+                icon: const Icon(
+                  Icons.add_box_rounded,
+                  color: accent_color1,
+                  size: 40,
+                ),
+              )
+
+              // IconButton(
+              //     onPressed: () {
+              //       Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //               builder: (_) => ProfileScreen(user: APIs.me)));
+              //     },
+              //     icon: const Icon(Icons.more_vert))
             ],
           ),
 
           //floating button to add new user
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 80),
-            child: FloatingActionButton(
-              onPressed: () {
-                _addChatUserDialog();
-              },
-              backgroundColor: accent_color1,
-              child: const Icon(
-                Icons.add_comment_rounded,
-                // color: Colors.white,
-                color: background_color1,
-              ),
-            ),
-          ),
+          // floatingActionButton: Padding(
+          //   padding: const EdgeInsets.only(bottom: 80),
+          //   child: FloatingActionButton(
+          //     onPressed: () {
+          //       _addChatUserDialog();
+          //     },
+          //     backgroundColor: accent_color1,
+          //     child: const Icon(
+          //       Icons.add_comment_rounded,
+          //       // color: Colors.white,
+          //       color: background_color1,
+          //     ),
+          //   ),
+          // ),
 
           //body
           body: StreamBuilder(

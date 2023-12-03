@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../styles.dart';
 import '../api/apis.dart';
 import '../helper/my_date_util.dart';
 import '../main.dart';
@@ -28,8 +29,8 @@ class _ChatUserCardState extends State<ChatUserCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: mq.width * .04, vertical: 4),
-      // color: Colors.blue.shade100,
-      elevation: 0.5,
+      color: background_color1,
+      elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
           onTap: () {
@@ -47,59 +48,74 @@ class _ChatUserCardState extends State<ChatUserCard> {
                   data?.map((e) => Message.fromJson(e.data())).toList() ?? [];
               if (list.isNotEmpty) _message = list[0];
 
-              return ListTile(
-                //user profile picture
-                leading: InkWell(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => ProfileDialog(user: widget.user));
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(mq.height * .03),
-                    child: CachedNetworkImage(
-                      width: mq.height * .055,
-                      height: mq.height * .055,
-                      imageUrl: widget.user.image,
-                      errorWidget: (context, url, error) => const CircleAvatar(
-                          child: Icon(CupertinoIcons.person)),
-                    ),
+              return Container(
+                decoration: BoxDecoration(
+                  color: background_color1,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: accent_color1.withOpacity(0.4),
                   ),
                 ),
+                child: ListTile(
+                  //user profile picture
+                  leading: InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) => ProfileDialog(user: widget.user));
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(mq.height * .03),
+                      child: CachedNetworkImage(
+                        width: mq.height * .055,
+                        height: mq.height * .055,
+                        imageUrl: widget.user.image,
+                        errorWidget: (context, url, error) =>
+                            const CircleAvatar(
+                                child: Icon(CupertinoIcons.person)),
+                      ),
+                    ),
+                  ),
 
-                //user name
-                title: Text(widget.user.name),
+                  //user name
+                  title: Text(widget.user.name),
 
-                //last message
-                subtitle: Text(
-                    _message != null
-                        ? _message!.type == Type.image
-                            ? 'image'
-                            : _message!.msg
-                        : widget.user.about,
-                    maxLines: 1),
+                  //last message
+                  subtitle: Text(
+                      _message != null
+                          ? _message!.type == Type.image
+                              ? 'image'
+                              : _message!.msg
+                          : widget.user.about,
+                      maxLines: 1),
 
-                //last message time
-                trailing: _message == null
-                    ? null //show nothing when no message is sent
-                    : _message!.read.isEmpty &&
-                            _message!.fromId != APIs.user.uid
-                        ?
-                        //show for unread message
-                        Container(
-                            width: 15,
-                            height: 15,
-                            decoration: BoxDecoration(
-                                color: Colors.greenAccent.shade400,
-                                borderRadius: BorderRadius.circular(10)),
-                          )
-                        :
-                        //message sent time
-                        Text(
-                            MyDateUtil.getLastMessageTime(
-                                context: context, time: _message!.sent),
-                            style: const TextStyle(color: Colors.black54),
-                          ),
+                  //last message time
+                  trailing: _message == null
+                      ? null //show nothing when no message is sent
+                      : _message!.read.isEmpty &&
+                              _message!.fromId != APIs.user.uid
+                          ?
+                          //show for unread message
+                          Container(
+                              // width: 15,
+                              // height: 15,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.teal,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text(
+                                'New',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            )
+                          :
+                          //message sent time
+                          Text(
+                              MyDateUtil.getLastMessageTime(
+                                  context: context, time: _message!.sent),
+                              style: const TextStyle(color: Colors.black54),
+                            ),
+                ),
               );
             },
           )),

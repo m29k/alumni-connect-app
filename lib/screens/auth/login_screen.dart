@@ -1,14 +1,16 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:alumni_connect_app/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../main_screen.dart';
+import '../../styles.dart';
 import '../../api/apis.dart';
 import '../../helper/dialogs.dart';
 import '../../main.dart';
+import '../../widgets/frostedGlassBox.dart';
 
 //login screen -- implements google sign in or sign up feature for app
 class LoginScreen extends StatefulWidget {
@@ -97,53 +99,141 @@ class _LoginScreenState extends State<LoginScreen> {
     // mq = MediaQuery.of(context).size;
 
     return Scaffold(
-      //app bar
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Welcome to We Chat'),
-      ),
-
       //body
       body: Stack(children: [
         //app logo
-        AnimatedPositioned(
-            top: mq.height * .15,
-            right: _isAnimate ? mq.width * .25 : -mq.width * .5,
-            width: mq.width * .5,
-            duration: const Duration(seconds: 1),
-            child: Image.asset('assets/images/icon.png')),
-
-        //google login button
-        Positioned(
-            bottom: mq.height * .15,
-            left: mq.width * .05,
-            width: mq.width * .9,
-            height: mq.height * .06,
-            child: ElevatedButton.icon(
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg1.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        TitleLogoContent(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 60),
+          child: Column(
+            children: <Widget>[
+              const Spacer(),
+              ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 223, 255, 187),
-                    shape: const StadiumBorder(),
-                    elevation: 1),
+                  // backgroundColor: Color.fromRGBO(241, 200, 76, 1),
+                  backgroundColor: background_color3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(42),
+                  ),
+                ),
+                icon: Image.asset('assets/images/google.png',
+                    height: mq.height * .03),
+                label: Container(
+                  padding: EdgeInsets.all(19),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Continue with Google',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.black,
+                        size: 12,
+                      ),
+                    ],
+                  ),
+                ),
                 onPressed: () {
                   _handleGoogleBtnClick();
                 },
-
-                //google icon
-                icon: Image.asset('assets/images/google.png',
-                    height: mq.height * .03),
-
-                //login with google label
-                label: RichText(
-                  text: const TextSpan(
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                      children: [
-                        TextSpan(text: 'Login with '),
-                        TextSpan(
-                            text: 'Google',
-                            style: TextStyle(fontWeight: FontWeight.w500)),
-                      ]),
-                ))),
+              ),
+            ],
+          ),
+        ),
       ]),
+    );
+  }
+}
+
+class TitleLogoContent extends StatelessWidget {
+  const TitleLogoContent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // decoration: const BoxDecoration(
+      //   gradient: LinearGradient(
+      //     colors: [
+      //       Colors.lightBlue,
+      //       Colors.white,
+      //       Colors.white,
+      //       // Colors.teal,
+      //       Colors.red
+      //     ],
+      //     begin: Alignment.topLeft,
+      //     end: Alignment.bottomRight,
+      //   ),
+      // ),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: FrostedGlassBox(
+        height: double.infinity,
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Get Started with IIIT Dharwad Alumni Connect!',
+                style: const TextStyle(
+                  // color: Colors.white,
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  decoration: TextDecoration.none,
+                  fontFamily: 'Montserrat',
+                ),
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                padding: const EdgeInsets.all(0),
+                child: Image.asset('assets/images/icon.png'),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              const Divider(),
+              Text(
+                'Join a vibrant community of IIIT Dharwad alumni. Discover and network with former students, explore their achievements, and engage in insightful conversations.',
+                style: TextStyle(
+                  // color: Colors.white,
+                  color: Colors.black,
+                  decoration: TextDecoration.none,
+                  fontFamily: 'Montserrat',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const Divider(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
