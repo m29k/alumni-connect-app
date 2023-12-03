@@ -63,20 +63,41 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await InternetAddress.lookup('google.com');
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      // final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      if (googleUser != null) {
+        // Check if the signed-in user's email has the allowed domain
+        if (googleUser.email.endsWith('@iiitdwd.ac.in')) {
+          // Obtain the auth details from the request
+          // Obtain the auth details from the request
+          final GoogleSignInAuthentication? googleAuth =
+              await googleUser.authentication;
 
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
+          // Create a new credential
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth?.accessToken,
+            idToken: googleAuth?.idToken,
+          );
 
-      // Once signed in, return the UserCredential
-      return await APIs.auth.signInWithCredential(credential);
+          // Once signed in, return the UserCredential
+          return await APIs.auth.signInWithCredential(credential);
+        } else {
+          // User's email domain is not allowed, show a message or handle accordingly
+          signOutFromGoogle().then((_) {
+            // Show progress bar
+            Dialogs.showSnackbar(
+                context, 'Sign-in with @iiitdwd.ac.in email only.');
+          });
+          // Return null or perform actions for unauthorized domain
+          googleUser = null;
+          return null;
+        }
+      } else {
+        // Handle case where Google sign-in account is null
+        Dialogs.showSnackbar(context, 'Google sign-in account is null.');
+        return null;
+      }
     } catch (e) {
       log('\n_signInWithGoogle: $e');
       print(
@@ -85,6 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
       Dialogs.showSnackbar(context, 'Something Went Wrong (Check Internet!)');
       return null;
     }
+  }
+
+  // Function to sign out from Google
+  Future<void> signOutFromGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut();
   }
 
   //sign out function
