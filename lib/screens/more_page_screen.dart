@@ -1,5 +1,7 @@
 import 'package:alumni_connect_app/widgets/appBarCommon.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/apis.dart';
 import '../models/chat_user.dart';
@@ -33,26 +35,25 @@ class MorePageScreen extends StatelessWidget {
                 ),
                 title: Text(user.name),
                 subtitle: Text(user.about),
-                trailing: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ProfileScreen(user: APIs.me)));
-                  },
-                  icon: const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    // color: Colors.white,
-                    color: Colors.grey,
-                  ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  // color: Colors.white,
+                  color: Colors.grey,
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ProfileScreen(user: APIs.me)));
+                },
               ),
             ),
             const SizedBox(height: 20),
-            Heading(
-              title: 'COMMUNITY',
-            ),
-            Personal(user: user),
+            Heading(title: 'PERSONAL'),
+            PERSONAL(user: user),
+            const SizedBox(height: 20),
+            Heading(title: 'IIIT DHARWAD'),
+            IIITDHARWAD(),
           ],
         ),
       ),
@@ -81,8 +82,8 @@ class Heading extends StatelessWidget {
   }
 }
 
-class Personal extends StatelessWidget {
-  const Personal({
+class PERSONAL extends StatelessWidget {
+  const PERSONAL({
     super.key,
     required this.user,
   });
@@ -96,26 +97,116 @@ class Personal extends StatelessWidget {
         color: background_color1,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: ListTile(
-        leading: const Icon(
-          Icons.notifications_active_outlined,
-          // color: Colors.white,
-          color: Colors.grey,
-        ),
-        title: Text(user.name),
-        trailing: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => ProfileScreen(user: APIs.me)));
-          },
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            // color: Colors.white,
-            color: Colors.grey,
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(
+              Icons.drive_folder_upload,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            title: Text('My Posts'),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            onTap: () {},
           ),
-        ),
+          const Divider(height: 1, indent: 10, endIndent: 10),
+          ListTile(
+            leading: const Icon(
+              Icons.settings,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            title: Text('Settings'),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class IIITDHARWAD extends StatelessWidget {
+  const IIITDHARWAD({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: background_color1,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(
+              Icons.web,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            title: Text('Website'),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            onTap: () {
+              const link = "https://www.iiitdwd.ac.in/";
+              launch(link);
+            },
+          ),
+          const Divider(height: 1, indent: 10, endIndent: 10),
+          ListTile(
+            leading: const Icon(
+              Icons.web_asset,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            title: Text('AIIMS Portal'),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            onTap: () {
+              const link = "https://aims.iiitdwd.ac.in/aims/";
+              launch(link);
+            },
+          ),
+          const Divider(height: 1, indent: 10, endIndent: 10),
+          ListTile(
+            leading: const Icon(
+              Icons.location_on_outlined,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            title: Text('Location'),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              // color: Colors.white,
+              color: Colors.grey,
+            ),
+            onTap: () async {
+              String location = Uri.encodeQueryComponent(
+                  'Indian Institute of Information Technology (IIIT), Dharwad');
+              print(location);
+
+              String url =
+                  'https://www.google.com/maps/search/?api=1&query=$location';
+              await launch(url);
+            },
+          ),
+        ],
       ),
     );
   }

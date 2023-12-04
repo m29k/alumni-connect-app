@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 class FrostedGlassBox extends StatelessWidget {
   final double width, height;
   final Widget child;
+  final Color color;
 
-  const FrostedGlassBox(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.child});
+  const FrostedGlassBox({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.child,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +53,8 @@ class FrostedGlassBox extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.white.withOpacity(0.5),
-                        Colors.white.withOpacity(0.1),
+                        color.withOpacity(0.5),
+                        color.withOpacity(0.1),
                       ],
                       stops: [
                         0.0,

@@ -6,8 +6,10 @@ get background_color2 => Colors.grey[200];
 get background_color3 => Colors.cyan[100];
 
 const Color accent_color1 = Colors.teal;
-const Color accent_color2 = Colors.red;
-const Color accent_color3 = Colors.cyan;
+const Color accent_color2 = Colors.cyan;
+const Color accent_color3 = Colors.red;
+
+Color get accent_color1_opacity => Colors.teal;
 
 const String font_family = '';
 const double page_title_size = 30;

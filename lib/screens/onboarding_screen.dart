@@ -189,6 +189,7 @@ class OnboardSlide extends StatelessWidget {
       child: FrostedGlassBox(
         height: double.infinity,
         width: double.infinity,
+        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: Column(
