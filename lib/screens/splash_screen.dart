@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:alumni_connect_app/screens/onboarding_screen.dart';
 import 'package:alumni_connect_app/widgets/frostedGlassCircle.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 
 import '../../main.dart';
@@ -53,11 +54,18 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
+  Future<void> _saveAppCloseTime() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('appCloseTime', DateTime.now().millisecondsSinceEpoch.toString());
+  }
+
   @override
   void dispose() {
     _controller.dispose();
+    _saveAppCloseTime();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
