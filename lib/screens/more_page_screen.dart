@@ -18,7 +18,7 @@ class MorePageScreen extends StatelessWidget {
       appBar: AppBarCommon(title: 'More'),
       body: Container(
         color: background_color2,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,7 +30,6 @@ class MorePageScreen extends StatelessWidget {
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundColor: background_color2.withOpacity(0.2),
-                  // backgroundImage: NetworkImage(userData['image']),
                   backgroundImage: NetworkImage(user.image),
                 ),
                 title: Text(user.name),
@@ -38,7 +37,7 @@ class MorePageScreen extends StatelessWidget {
                 trailing: const Icon(
                   Icons.arrow_forward_ios_rounded,
                   // color: Colors.white,
-                  color: Colors.grey,
+                  color: Colors.teal,
                 ),
                 onTap: () {
                   Navigator.push(
@@ -53,7 +52,7 @@ class MorePageScreen extends StatelessWidget {
             PERSONAL(user: user),
             const SizedBox(height: 20),
             Heading(title: 'IIIT DHARWAD'),
-            IIITDHARWAD(),
+            const IIITDHARWAD(),
           ],
         ),
       ),
@@ -71,10 +70,10 @@ class Heading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -103,13 +102,13 @@ class PERSONAL extends StatelessWidget {
             leading: const Icon(
               Icons.drive_folder_upload,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
-            title: Text('My Posts'),
+            title: const Text('My Posts'),
             trailing: const Icon(
               Icons.arrow_forward_ios_rounded,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
             onTap: () {},
           ),
@@ -118,13 +117,13 @@ class PERSONAL extends StatelessWidget {
             leading: const Icon(
               Icons.settings,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
-            title: Text('Settings'),
+            title: const Text('Settings'),
             trailing: const Icon(
               Icons.arrow_forward_ios_rounded,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
             onTap: () {},
           ),
@@ -151,14 +150,12 @@ class IIITDHARWAD extends StatelessWidget {
           ListTile(
             leading: const Icon(
               Icons.web,
-              // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
-            title: Text('Website'),
+            title: const Text('Website'),
             trailing: const Icon(
               Icons.arrow_forward_ios_rounded,
-              // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
             onTap: () {
               const link = "https://www.iiitdwd.ac.in/";
@@ -170,13 +167,13 @@ class IIITDHARWAD extends StatelessWidget {
             leading: const Icon(
               Icons.web_asset,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
-            title: Text('AIIMS Portal'),
+            title: const Text('AIIMS Portal'),
             trailing: const Icon(
               Icons.arrow_forward_ios_rounded,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
             onTap: () {
               const link = "https://aims.iiitdwd.ac.in/aims/";
@@ -188,13 +185,13 @@ class IIITDHARWAD extends StatelessWidget {
             leading: const Icon(
               Icons.location_on_outlined,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
-            title: Text('Location'),
+            title: const Text('Location'),
             trailing: const Icon(
               Icons.arrow_forward_ios_rounded,
               // color: Colors.white,
-              color: Colors.grey,
+              color: Colors.teal,
             ),
             onTap: () async {
               String location = Uri.encodeQueryComponent(

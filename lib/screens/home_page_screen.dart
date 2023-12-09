@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
@@ -114,7 +115,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
             if (newPost != null) {}
           },
-          backgroundColor: Color.fromARGB(255, 40, 158, 132),
+          backgroundColor: const Color.fromARGB(255, 40, 158, 132),
           shape: const CircleBorder(),
           child: const Icon(Icons.add, color: Colors.white),
         ),
@@ -196,6 +197,8 @@ class PostCard extends StatelessWidget {
 }
 
 class AddPostScreen extends StatefulWidget {
+  const AddPostScreen({super.key});
+
   @override
   _AddPostScreenState createState() => _AddPostScreenState();
 }
@@ -210,33 +213,75 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Post'),
+        backgroundColor: Colors.teal.shade400,
+        title:
+            const Text('Add New Post', style: TextStyle(color: Colors.white)),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+            )),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(26.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               controller: titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
+              decoration: InputDecoration(
+                labelText: 'Title',
+                hintText: 'Enter a detailed description...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                filled: true,
+                fillColor: const Color.fromRGBO(232, 250, 248, 1),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: 16.0),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: descriptionController,
-              maxLines: 5, // Set maxLines to allow multiple lines
-              decoration: const InputDecoration(
+              maxLines: 5,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.black87,
+              ),
+              decoration: InputDecoration(
                 labelText: 'Description',
                 hintText: 'Enter a detailed description...',
-                border: OutlineInputBorder(), // Add border for a better look
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(36),
+                ),
+                filled: true,
+                fillColor: const Color.fromARGB(255, 232, 250, 248),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: 16.0),
               ),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _showImageSourceDialog();
-              },
-              child: const Text('Pick Image'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/add_pic.svg',
+                ),
+                TextButton(
+                  onPressed: _showImageSourceDialog,
+                  child: const Text(
+                    'Pick Image',
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             if (pickedImage != null)
@@ -246,38 +291,51 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 width: 100,
                 fit: BoxFit.cover,
               ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                String? downloadUrl;
+            const SizedBox(height: 30),
+            Container(
+              width: 200,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () async {
+                  String? downloadUrl;
 
-                // Check if an image is picked
-                if (pickedImage != null) {
-                  // Upload image to Firebase Storage
-                  downloadUrl =
-                      await _uploadImageToFirebaseStorage(pickedImage!);
-                }
+                  if (pickedImage != null) {
+                    downloadUrl =
+                        await _uploadImageToFirebaseStorage(pickedImage!);
+                  }
 
-                // Retrieve the current user
-                User? currentUser = FirebaseAuth.instance.currentUser;
+                  User? currentUser = FirebaseAuth.instance.currentUser;
 
-                if (currentUser != null) {
-                  Post newPost = Post(
-                      title: titleController.text,
-                      description: descriptionController.text,
-                      userName: currentUser.displayName ?? 'Anonymous',
-                      imageUrl: downloadUrl,
-                      postedDate: DateTime.now().toString(),
-                      userProfileImageUrl: currentUser.photoURL);
+                  if (currentUser != null) {
+                    Post newPost = Post(
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        userName: currentUser.displayName ?? 'Anonymous',
+                        imageUrl: downloadUrl,
+                        postedDate: DateTime.now().toString(),
+                        userProfileImageUrl: currentUser.photoURL);
 
-                  await _addPostToFirestore(newPost);
+                    await _addPostToFirestore(newPost);
 
-                  Navigator.pop(context, newPost);
-                } else {
-                  print('User not signed in.');
-                }
-              },
-              child: const Text('Add Post'),
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context, newPost);
+                  } else {
+                    print('User not signed in.');
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  primary: Colors.teal.shade400,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(26.0),
+                  ),
+                ),
+                child: const Text(
+                  'Add Post',
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800),
+                ),
+              ),
             ),
           ],
         ),
