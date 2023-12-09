@@ -16,3 +16,8 @@ const double page_title_size = 30;
 const double heading_text_size = 20;
 const double normal_text_size = 15;
 const double small_text_size = 10;
+
+class GlobalVariables {
+  static final appBarColor = Colors.teal.shade400;
+  static const mainColor = Colors.teal;
+}

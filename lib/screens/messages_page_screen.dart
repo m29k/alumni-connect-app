@@ -4,6 +4,7 @@ import 'package:alumni_connect_app/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../api/apis.dart';
 import '../helper/dialogs.dart';
@@ -76,7 +77,7 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
           appBar: AppBar(
             leading: const Icon(CupertinoIcons.bubble_left_bubble_right_fill),
             // backgroundColor: background_color1,
-            backgroundColor: accent_color1.withOpacity(0.3),
+            backgroundColor: GlobalVariables.appBarColor,
             shape: const Border(
               bottom: BorderSide(
                 width: 1,
@@ -119,48 +120,16 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                       _isSearching = !_isSearching;
                     });
                   },
-                  icon: Icon(_isSearching
-                      ? CupertinoIcons.clear_circled_solid
-                      : Icons.search)),
+                  icon: SvgPicture.asset('assets/icons/search.svg')),
 
               //more features button
               IconButton(
-                onPressed: () {
-                  _addChatUserDialog();
-                },
-                icon: const Icon(
-                  Icons.add_box_rounded,
-                  color: accent_color1,
-                  size: 40,
-                ),
-              )
-
-              // IconButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (_) => ProfileScreen(user: APIs.me)));
-              //     },
-              //     icon: const Icon(Icons.more_vert))
+                  onPressed: () {
+                    _addChatUserDialog();
+                  },
+                  icon: SvgPicture.asset('assets/icons/add_user.svg'))
             ],
           ),
-
-          //floating button to add new user
-          // floatingActionButton: Padding(
-          //   padding: const EdgeInsets.only(bottom: 80),
-          //   child: FloatingActionButton(
-          //     onPressed: () {
-          //       _addChatUserDialog();
-          //     },
-          //     backgroundColor: accent_color1,
-          //     child: const Icon(
-          //       Icons.add_comment_rounded,
-          //       // color: Colors.white,
-          //       color: background_color1,
-          //     ),
-          //   ),
-          // ),
 
           //body
           body: StreamBuilder(
@@ -244,12 +213,8 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
 
               //title
               title: Row(
-                children: const [
-                  Icon(
-                    Icons.person_add,
-                    color: Colors.blue,
-                    size: 28,
-                  ),
+                children: [
+                  SvgPicture.asset('assets/icons/add_user.svg'),
                   Text('  Add User')
                 ],
               ),
@@ -260,7 +225,8 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                 onChanged: (value) => email = value,
                 decoration: InputDecoration(
                     hintText: 'Email Id',
-                    prefixIcon: const Icon(Icons.email, color: Colors.blue),
+                    prefixIcon: const Icon(Icons.email,
+                        color: GlobalVariables.mainColor),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15))),
               ),
@@ -274,7 +240,8 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                       Navigator.pop(context);
                     },
                     child: const Text('Cancel',
-                        style: TextStyle(color: Colors.blue, fontSize: 16))),
+                        style: TextStyle(
+                            color: GlobalVariables.mainColor, fontSize: 16))),
 
                 //add button
                 MaterialButton(
@@ -292,7 +259,8 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                     },
                     child: const Text(
                       'Add',
-                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                      style: TextStyle(
+                          color: GlobalVariables.mainColor, fontSize: 16),
                     ))
               ],
             ));

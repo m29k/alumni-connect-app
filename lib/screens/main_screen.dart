@@ -44,19 +44,15 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        extendBody: true,
-        // appBar: AppBar(
-        //   title: Text(
-        //     'Alumni Connect',
-        //     style: TextStyle(fontWeight: FontWeight.bold),
-        //   ),
-        // ),
-        body: _pages[_selectedIndex],
-        bottomNavigationBar: CustomBottomNavBar(
-          onItemTapped: _onItemTapped,
-          selectedIndex: _selectedIndex,
-        ),
-      ),
+          extendBody: true,
+          // appBar: AppBar(
+          //   title: Text(
+          //     'Alumni Connect',
+          //     style: TextStyle(fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+          body: _pages[_selectedIndex],
+          bottomNavigationBar: const CustomBottomNavBar()),
     );
   }
 }
