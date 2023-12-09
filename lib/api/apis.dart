@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart';
 
@@ -141,9 +142,42 @@ class APIs {
     });
   }
 
-  // for creating a new user
+  // to check user exist or not for craetedAt time
+
+  static Future<String> checkUserExists(String userId) async {
+    try {
+
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+
+      DocumentSnapshot snapshot = await users.doc(userId).get();
+
+      // Check if the user exists
+      if (snapshot.exists) {
+        // User exists
+        return snapshot.get('created_at');
+      } else {
+        // User does not exist
+        return "";
+      }
+    } catch (e) {
+      // Handle any errors that occurred during the process
+     // print(e);
+      return "";
+    }
+
+  }
+
+// for creating a new user
   static Future<void> createUser() async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
+
+    String createdtime = await checkUserExists(user.uid);
+
+    if(createdtime.isEmpty)
+    {
+      createdtime=time;
+    }
 
     final chatUser = ChatUser(
         id: user.uid,
@@ -151,10 +185,14 @@ class APIs {
         email: user.email.toString(),
         about: "Hey, I'm using We Chat!",
         image: user.photoURL.toString(),
-        createdAt: time,
+        createdAt: createdtime,
         isOnline: false,
         lastActive: time,
         pushToken: '');
+
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('appCloseTime', DateTime.now().millisecondsSinceEpoch.toString());
 
     return await firestore
         .collection('users')

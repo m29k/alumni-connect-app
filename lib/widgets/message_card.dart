@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:alumni_connect_app/styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,7 @@ class _MessageCardState extends State<MessageCard> {
     }
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         //message content
         Flexible(
@@ -41,13 +42,25 @@ class _MessageCardState extends State<MessageCard> {
             margin: EdgeInsets.symmetric(
                 horizontal: mq.width * .04, vertical: mq.height * .01),
             decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 221, 245, 255),
-                border: Border.all(color: Colors.lightBlue),
-                //making borders curved
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                    bottomRight: Radius.circular(30))),
+              // color: const Color.fromARGB(255, 221, 245, 255),
+              gradient: LinearGradient(
+                colors: [
+                  accent_color2.withOpacity(0.8),
+                  Colors.white.withOpacity(0.8),
+                ],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+              ),
+              border:
+                  // Border.all(color: accent_color2.withOpacity(0.5), width: 2),
+                  Border.all(color: accent_color2, width: 2),
+              //making borders curved
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+            ),
             child: widget.message.type == Type.text
                 ?
                 //show text
@@ -75,10 +88,24 @@ class _MessageCardState extends State<MessageCard> {
         //message time
         Padding(
           padding: EdgeInsets.only(right: mq.width * .04),
-          child: Text(
-            MyDateUtil.getFormattedTime(
-                context: context, time: widget.message.sent),
-            style: const TextStyle(fontSize: 13, color: Colors.black54),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white12,
+              border: Border.all(color: Colors.white30, width: 1),
+              // color: Colors.black12,
+              // border: Border.all(color: Colors.black26, width: 1),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            padding: const EdgeInsets.all(1),
+            child: Text(
+              MyDateUtil.getFormattedTime(
+                  context: context, time: widget.message.sent),
+              style: const TextStyle(
+                fontSize: 13,
+                // color: Colors.black54,
+                color: Colors.white70,
+              ),
+            ),
           ),
         ),
       ],
@@ -88,7 +115,7 @@ class _MessageCardState extends State<MessageCard> {
   // our or user message
   Widget _greenMessage() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         //message time
         Row(
@@ -104,10 +131,24 @@ class _MessageCardState extends State<MessageCard> {
             const SizedBox(width: 2),
 
             //sent time
-            Text(
-              MyDateUtil.getFormattedTime(
-                  context: context, time: widget.message.sent),
-              style: const TextStyle(fontSize: 13, color: Colors.black54),
+            Container(
+              decoration: BoxDecoration(
+                // color: Colors.black12,
+                // border: Border.all(color: Colors.black26, width: 1),
+                color: Colors.white12,
+                border: Border.all(color: Colors.white30, width: 1),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              padding: const EdgeInsets.all(1),
+              child: Text(
+                MyDateUtil.getFormattedTime(
+                    context: context, time: widget.message.sent),
+                style: const TextStyle(
+                  fontSize: 13,
+                  // color: Colors.black54,
+                  color: Colors.white70,
+                ),
+              ),
             ),
           ],
         ),
@@ -121,8 +162,19 @@ class _MessageCardState extends State<MessageCard> {
             margin: EdgeInsets.symmetric(
                 horizontal: mq.width * .04, vertical: mq.height * .01),
             decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 218, 255, 176),
-                border: Border.all(color: Colors.lightGreen),
+                // color: const Color.fromARGB(255, 218, 255, 176),
+                gradient: LinearGradient(
+                  colors: [
+                    accent_color1.withOpacity(0.8),
+                    Colors.white.withOpacity(0.8),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                // border:
+                //     Border.all(color: accent_color1.withOpacity(0.5), width: 2),
+                border: Border.all(color: accent_color1, width: 2),
+                // border: Border.all(color: Colors.lightGreen),
                 //making borders curved
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
