@@ -69,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
             //body
             body: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   // image: AssetImage("assets/images/splash_bg.jpg"),
                   image: AssetImage("assets/images/bg2.jpg"),
@@ -199,20 +199,21 @@ class _ChatScreenState extends State<ChatScreen> {
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
-                  border: const Border(
-                    bottom: BorderSide(
-                      color: Colors.white,
-                      width: 1,
-                    ),
-                    left: BorderSide(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    right: BorderSide(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                  ),
+                  // border: const Border(
+                  //   bottom: BorderSide(
+                  //     color: Colors.white,
+                  //     width: 1,
+                  //   ),
+                  //   left: BorderSide(
+                  //     color: Colors.white,
+                  //     width: 2,
+                  //   ),
+                  //   right: BorderSide(
+                  //     color: Colors.white,
+                  //     width: 2,
+                  //   ),
+                  // ),
+                  border: Border.all(color: Colors.white, width: 1),
                 ),
                 child: Row(
                   children: [

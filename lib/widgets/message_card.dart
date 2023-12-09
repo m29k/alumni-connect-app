@@ -23,16 +23,6 @@ class MessageCard extends StatefulWidget {
 }
 
 class _MessageCardState extends State<MessageCard> {
-  @override
-  Widget build(BuildContext context) {
-    bool isMe = APIs.user.uid == widget.message.fromId;
-    return InkWell(
-        onLongPress: () {
-          _showBottomSheet(isMe);
-        },
-        child: isMe ? _greenMessage() : _blueMessage());
-  }
-
   // sender or another user message
   Widget _blueMessage() {
     //update last read message if sender and receiver are different
@@ -399,16 +389,26 @@ class _MessageCardState extends State<MessageCard> {
               ],
             ));
   }
+
+  @override
+  Widget build(BuildContext context) {
+    bool isMe = APIs.user.uid == widget.message.fromId;
+    return InkWell(
+        onLongPress: () {
+          _showBottomSheet(isMe);
+        },
+        child: isMe ? _greenMessage() : _blueMessage());
+  }
 }
 
 //custom options card (for copy, edit, delete, etc.)
 class _OptionItem extends StatelessWidget {
+  const _OptionItem(
+      {required this.icon, required this.name, required this.onTap});
+
   final Icon icon;
   final String name;
   final VoidCallback onTap;
-
-  const _OptionItem(
-      {required this.icon, required this.name, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

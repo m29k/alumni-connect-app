@@ -1,7 +1,6 @@
-import 'package:alumni_connect_app/widgets/appBarCommon.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../helper/dialogs.dart';
 import '../styles.dart';
@@ -9,9 +8,6 @@ import '../models/chat_user.dart';
 import '../api/apis.dart';
 
 class MembersPageScreen extends StatefulWidget {
-  // final ChatUser loggedInUser;
-  // const MembersPageScreen({super.key, required this.loggedInUser});
-  // const MembersPageScreen(this.loggedInUser);
   const MembersPageScreen({super.key});
 
   @override
@@ -30,30 +26,21 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
   void _makeList(List<QueryDocumentSnapshot<Object?>> users, String yearFilter,
       String branchFilter) {
     _list.clear();
-    // yearFilter = yearFilter.substring(2, 2).toLowerCase();
 
     for (var userDoc in users) {
       var userData = userDoc.data() as Map<String, dynamic>;
       var userEmail = userData['email'] as String;
 
-      var year = userEmail.substring(0, 2); // Extracting 'yy'
-      var branch = userEmail.substring(2, 5); // Extracting 'bbb'
-
-      // Check if the user matches the provided year and/or branch filter
-      // bool matchesYear = yearFilter.isEmpty || year == yearFilter;
-      // bool matchesBranch = branchFilter.isEmpty || branch == branchFilter;
+      var year = userEmail.substring(0, 2);
+      var branch = userEmail.substring(2, 5);
 
       bool matchesYear = yearFilter == 'All' || year == yearFilter.substring(2);
       bool matchesBranch = branchFilter == 'All' ||
           branch == 'b${branchFilter.toLowerCase().substring(0, 2)}';
       print('######');
-      // print(year);
       print(yearFilter);
-      // print(yearFilter.substring(2));
       print(branchFilter);
-      // print('b${branchFilter.toLowerCase().substring(0, 2)}');
 
-      // Add the user to the list if it matches the provided filters
       if (matchesYear && matchesBranch) {
         _list.add(userData);
       }
@@ -64,8 +51,6 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
     setState(() {
       if (newYearFilter != '') yearFilter = newYearFilter;
       if (newBranchFilter != '') branchFilter = newBranchFilter;
-      // print(yearFilter);
-      // print(branchFilter);
     });
   }
 
@@ -73,12 +58,14 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(CupertinoIcons.person_2_fill),
-        elevation: 10,
-        // backgroundColor: background_color1,
-        // backgroundColor: Colors.teal[100],
+        leading: Transform.scale(
+          scale: 0.6,
+          child: SvgPicture.asset(
+            'assets/icons/members.svg',
+          ),
+        ),
+        elevation: 0,
         backgroundColor: accent_color1.withOpacity(0.3),
-
         shape: const Border(
           bottom: BorderSide(
             width: 1,
@@ -113,19 +100,24 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
               )
             : const Text(
                 'Members',
-                style: TextStyle(fontSize: page_title_size),
+                style: TextStyle(
+                    fontSize: page_title_size, fontWeight: FontWeight.w700),
               ),
         actions: [
           //search user button
           IconButton(
-              onPressed: () {
-                setState(() {
-                  _isSearching = !_isSearching;
-                });
-              },
-              icon: Icon(_isSearching
-                  ? CupertinoIcons.clear_circled_solid
-                  : Icons.search)),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+              });
+            },
+            icon: SvgPicture.asset(
+              'assets/icons/search.svg',
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          )
         ],
       ),
       backgroundColor: background_color1,
@@ -135,22 +127,13 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            // Extract user data from the 'users' collection
             final users = snapshot.data!.docs;
             ChatUser loggedInUser = APIs.me;
-
-            // _list.clear();
-
-            // for (var userDoc in users) {
-            //   var userData = userDoc.data() as Map<String, dynamic>;
-            //   _list.add(userData);
-            // }
             _makeList(users, yearFilter, branchFilter);
 
-            // if (_list.isNotEmpty) {
             return Column(
               children: [
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 FilterBar(changeFilter: _changeFilter),
                 _list.isNotEmpty
                     ? Expanded(
@@ -161,13 +144,6 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
                           itemBuilder: (context, index) {
                             var userData =
                                 users[index].data() as Map<String, dynamic>;
-
-                            // Access 'name' and 'about' fields for each user
-                            // var userId = userData['id'];
-                            // var name = userData['name'];
-                            // var email = userData['email'];
-                            // var about = userData['about'] ?? 'No description available';
-
                             var userId = _isSearching
                                 ? _searchList[index]['id']
                                 : _list[index]['id'];
@@ -188,16 +164,14 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
                             print(loggedInUser.name);
 
                             if (userId == loggedInUser.id) {
-                              return SizedBox(); // Return an empty container for logged-in user
+                              return const SizedBox();
                             }
-
                             return Column(
                               children: [
                                 ListTile(
                                   leading: CircleAvatar(
                                     backgroundColor:
                                         background_color2.withOpacity(0.2),
-                                    // backgroundImage: NetworkImage(userData['image']),
                                     backgroundImage: NetworkImage(image),
                                   ),
                                   title: Text(name),
@@ -215,10 +189,15 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
                                         }
                                       });
                                     },
-                                    icon: const Icon(
-                                      Icons.add_comment_rounded,
-                                      // color: Colors.white,
-                                      color: accent_color1,
+                                    icon: ColorFiltered(
+                                      colorFilter: const ColorFilter.mode(
+                                        Colors.teal,
+                                        BlendMode.srcIn,
+                                      ),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/add_chat.svg',
+                                        semanticsLabel: 'Add Chat',
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -238,12 +217,6 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
                       ),
               ],
             );
-            // } else {
-            //   return const Center(
-            //     child: Text('No Other Members Found!',
-            //         style: TextStyle(fontSize: 20)),
-            //   );
-            // }
           }
         },
       ),
@@ -266,7 +239,6 @@ class FilterBar extends StatelessWidget {
     int currentYear = DateTime.now().year;
     for (int year = 2019; year <= currentYear; year++) {
       years.add(year.toString());
-      // print(year.toString());
     }
   }
 
@@ -283,22 +255,20 @@ class FilterBar extends StatelessWidget {
             decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(width: 2, color: accent_color1),
+                  borderSide: const BorderSide(width: 2, color: accent_color1),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                      width: 2,
-                      color: accent_color1), // Border for focused state
+                  borderSide: const BorderSide(width: 2, color: accent_color1),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(width: 2, color: accent_color1),
+                  borderSide: const BorderSide(width: 2, color: accent_color1),
                 ),
-                label: Text('Year'),
-                labelStyle: TextStyle(color: accent_color1),
-                contentPadding: EdgeInsets.all(10),
-                prefixIcon: Icon(Icons.date_range)),
+                label: const Text('Year'),
+                labelStyle: const TextStyle(color: accent_color1),
+                contentPadding: const EdgeInsets.all(10),
+                prefixIcon: const Icon(Icons.date_range)),
             value: yearValue,
             elevation: 0,
             borderRadius: BorderRadius.circular(10),
@@ -307,7 +277,7 @@ class FilterBar extends StatelessWidget {
                 value: value,
                 child: Text(
                   value,
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
               );
             }).toList(),
@@ -315,8 +285,6 @@ class FilterBar extends StatelessWidget {
               yearValue = newValue!;
               print(yearValue);
               changeFilter(newValue, '');
-              // setState(() {
-              // });
             },
           ),
         ),
@@ -328,22 +296,20 @@ class FilterBar extends StatelessWidget {
             decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(width: 2, color: accent_color1),
+                  borderSide: const BorderSide(width: 2, color: accent_color1),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                      width: 2,
-                      color: accent_color1), // Border for focused state
+                  borderSide: const BorderSide(width: 2, color: accent_color1),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(width: 2, color: accent_color1),
+                  borderSide: const BorderSide(width: 2, color: accent_color1),
                 ),
-                label: Text('Branch'),
-                labelStyle: TextStyle(color: accent_color1),
-                contentPadding: EdgeInsets.all(10),
-                prefixIcon: Icon(Icons.date_range)),
+                label: const Text('Branch'),
+                labelStyle: const TextStyle(color: accent_color1),
+                contentPadding: const EdgeInsets.all(10),
+                prefixIcon: const Icon(Icons.date_range)),
             value: yearValue,
             elevation: 0,
             borderRadius: BorderRadius.circular(10),
@@ -352,7 +318,7 @@ class FilterBar extends StatelessWidget {
                 value: value,
                 child: Text(
                   value,
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
               );
             }).toList(),
@@ -360,8 +326,6 @@ class FilterBar extends StatelessWidget {
               yearValue = newValue!;
               print(yearValue);
               changeFilter('', newValue);
-              // setState(() {
-              // });
             },
           ),
         ),
