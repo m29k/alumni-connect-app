@@ -11,7 +11,6 @@ import '../models/message.dart';
 import '../screens/chat_screen.dart';
 import 'dialogs/profile_dialog.dart';
 
-//card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
   final ChatUser user;
 
@@ -22,7 +21,6 @@ class ChatUserCard extends StatefulWidget {
 }
 
 class _ChatUserCardState extends State<ChatUserCard> {
-  //last message info (if null --> no message)
   Message? _message;
 
   @override
@@ -34,7 +32,6 @@ class _ChatUserCardState extends State<ChatUserCard> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
           onTap: () {
-            //for navigating to chat screen
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -57,7 +54,6 @@ class _ChatUserCardState extends State<ChatUserCard> {
                   ),
                 ),
                 child: ListTile(
-                  //user profile picture
                   leading: InkWell(
                     onTap: () {
                       showDialog(
@@ -76,11 +72,7 @@ class _ChatUserCardState extends State<ChatUserCard> {
                       ),
                     ),
                   ),
-
-                  //user name
                   title: Text(widget.user.name),
-
-                  //last message
                   subtitle: Text(
                       _message != null
                           ? _message!.type == Type.image
@@ -88,22 +80,16 @@ class _ChatUserCardState extends State<ChatUserCard> {
                               : _message!.msg
                           : widget.user.about,
                       maxLines: 1),
-
-                  //last message time
                   trailing: _message == null
                       ? null //show nothing when no message is sent
                       : _message!.read.isEmpty &&
                               _message!.fromId != APIs.user.uid
-                          ?
-                          //show for unread message
-                          Container(
-                              // width: 15,
-                              // height: 15,
+                          ? Container(
                               padding: EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   color: Colors.teal,
                                   borderRadius: BorderRadius.circular(10)),
-                              child: Text(
+                              child: const Text(
                                 'New',
                                 style: TextStyle(color: Colors.black),
                               ),
