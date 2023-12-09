@@ -60,12 +60,10 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
       appBar: AppBar(
         leading: Transform.scale(
           scale: 0.6,
-          child: SvgPicture.asset(
-            'assets/icons/members.svg',
-          ),
+          child: SvgPicture.asset('assets/icons/members.svg'),
         ),
         elevation: 0,
-        backgroundColor: accent_color1.withOpacity(0.3),
+        backgroundColor: GlobalVariables.appBarColor,
         shape: const Border(
           bottom: BorderSide(
             width: 1,
@@ -101,7 +99,9 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
             : const Text(
                 'Members',
                 style: TextStyle(
-                    fontSize: page_title_size, fontWeight: FontWeight.w700),
+                    fontSize: page_title_size,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black),
               ),
         actions: [
           //search user button
