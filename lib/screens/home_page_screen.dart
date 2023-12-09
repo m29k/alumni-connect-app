@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 
 import '../styles.dart';
 
@@ -29,13 +30,12 @@ class Post {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     return Post(
-      title: data['title'] ?? '',
-      description: data['description'] ?? '',
-      userName: data['userName'] ?? '',
-      postedDate: data['postedDate'] ?? '',
-      imageUrl: data['imageUrl'],
-        userProfileImageUrl: data['userProfileImageUrl']
-    );
+        title: data['title'] ?? '',
+        description: data['description'] ?? '',
+        userName: data['userName'] ?? '',
+        postedDate: data['postedDate'] ?? '',
+        imageUrl: data['imageUrl'],
+        userProfileImageUrl: data['userProfileImageUrl']);
   }
 }
 
@@ -64,12 +64,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
         .orderBy('postedDate', descending: true)
         .snapshots()
         .map((querySnapshot) =>
-        querySnapshot.docs.map((doc) => Post.fromFirestore(doc)).toList());
+            querySnapshot.docs.map((doc) => Post.fromFirestore(doc)).toList());
   }
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent &&
+            _scrollController.position.maxScrollExtent &&
         !_isLoading) {
       // You can load more posts here if needed
     }
@@ -89,7 +89,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -107,28 +107,22 @@ class _HomePageScreenState extends State<HomePageScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // Navigate to the screen where users can add a new post
             final newPost = await Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => AddPostScreen()),
             );
 
-            // Check if the user added a new post
-            if (newPost != null) {
-              // Note: The StreamBuilder will automatically rebuild when the stream updates
-            }
+            if (newPost != null) {}
           },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.green, // Replace with the desired color
-          shape: CircleBorder(),
+          backgroundColor: Color.fromARGB(255, 40, 158, 132),
+          shape: const CircleBorder(),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       ),
     );
   }
 }
-
-
 
 class PostList extends StatelessWidget {
   final List<Post> posts;
@@ -160,15 +154,14 @@ class PostCard extends StatelessWidget {
         children: [
           ListTile(
             leading: CircleAvatar(
-              // You can use the user's profile picture here
-              // If the user doesn't have a profile picture, you can use a default image
               backgroundImage: post.userProfileImageUrl != null
                   ? NetworkImage(post.userProfileImageUrl!)
                   : const AssetImage('assets/images/userImageIcon.png')
                       as ImageProvider,
             ),
             title: Text(post.userName),
-            subtitle: Text('Posted on: ${post.postedDate}'),
+            subtitle: Text(
+                'Posted on: ${DateFormat.yMMMMd().add_jms().format(DateTime.parse(post.postedDate!))}'),
           ),
           if (post.imageUrl != null)
             Image.network(
@@ -178,16 +171,21 @@ class PostCard extends StatelessWidget {
               height: 200,
             ),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   post.title,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
-                Text(post.description),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(post.description),
+                ),
               ],
             ),
           ),
@@ -212,7 +210,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Post'),
+        title: const Text('Add New Post'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -221,26 +219,26 @@ class _AddPostScreenState extends State<AddPostScreen> {
           children: [
             TextField(
               controller: titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: descriptionController,
               maxLines: 5, // Set maxLines to allow multiple lines
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Description',
                 hintText: 'Enter a detailed description...',
                 border: OutlineInputBorder(), // Add border for a better look
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 _showImageSourceDialog();
               },
-              child: Text('Pick Image'),
+              child: const Text('Pick Image'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             if (pickedImage != null)
               Image.file(
                 pickedImage!,
@@ -248,7 +246,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 width: 100,
                 fit: BoxFit.cover,
               ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
                 String? downloadUrl;
@@ -265,13 +263,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
                 if (currentUser != null) {
                   Post newPost = Post(
-                    title: titleController.text,
-                    description: descriptionController.text,
-                    userName: currentUser.displayName ?? 'Anonymous',
-                    imageUrl: downloadUrl,
-                    postedDate: DateTime.now().toString(),
-                    userProfileImageUrl: currentUser.photoURL
-                  );
+                      title: titleController.text,
+                      description: descriptionController.text,
+                      userName: currentUser.displayName ?? 'Anonymous',
+                      imageUrl: downloadUrl,
+                      postedDate: DateTime.now().toString(),
+                      userProfileImageUrl: currentUser.photoURL);
 
                   await _addPostToFirestore(newPost);
 
@@ -280,7 +277,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   print('User not signed in.');
                 }
               },
-              child: Text('Add Post'),
+              child: const Text('Add Post'),
             ),
           ],
         ),
@@ -309,21 +306,21 @@ class _AddPostScreenState extends State<AddPostScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Choose Image Source'),
+          title: const Text('Choose Image Source'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(ImageSource.gallery);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.camera),
-                title: Text('Camera'),
+                leading: const Icon(Icons.camera),
+                title: const Text('Camera'),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(ImageSource.camera);
