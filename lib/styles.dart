@@ -19,5 +19,6 @@ const double small_text_size = 10;
 
 class GlobalVariables {
   static final appBarColor = Colors.teal.shade400;
+  static const backgroundColor = Color.fromARGB(255, 223, 246, 244);
   static const mainColor = Colors.teal;
 }
