@@ -15,45 +15,55 @@ class MorePageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatUser user = APIs.me;
     return Scaffold(
-      appBar: AppBarCommon(title: 'More'),
+      // backgroundColor: GlobalVariables.backgroundColor,
+      appBar: AppBar(
+        backgroundColor: GlobalVariables.appBarColor,
+        title: Center(
+          child: Text("MORE"),
+        ),
+        elevation: 0,
+      ),
       body: Container(
-        color: background_color2,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: background_color1,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: background_color2.withOpacity(0.2),
-                  backgroundImage: NetworkImage(user.image),
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          color: background_color2,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: background_color1,
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                title: Text(user.name),
-                subtitle: Text(user.about),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  // color: Colors.white,
-                  color: Colors.teal,
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: background_color2.withOpacity(0.2),
+                    backgroundImage: NetworkImage(user.image),
+                  ),
+                  title: Text(user.name),
+                  subtitle: Text(user.about),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    // color: Colors.white,
+                    color: Colors.teal,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ProfileScreen(user: APIs.me)));
+                  },
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => ProfileScreen(user: APIs.me)));
-                },
               ),
-            ),
-            const SizedBox(height: 20),
-            Heading(title: 'PERSONAL'),
-            PERSONAL(user: user),
-            const SizedBox(height: 20),
-            Heading(title: 'IIIT DHARWAD'),
-            const IIITDHARWAD(),
-          ],
+              const SizedBox(height: 20),
+              Heading(title: 'PERSONAL'),
+              PERSONAL(user: user),
+              const SizedBox(height: 20),
+              Heading(title: 'IIIT DHARWAD'),
+              const IIITDHARWAD(),
+            ],
+          ),
         ),
       ),
     );
@@ -69,7 +79,7 @@ class Heading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       child: Text(
         title,
@@ -91,43 +101,47 @@ class PERSONAL extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: background_color1,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        children: [
-          ListTile(
-            leading: const Icon(
-              Icons.drive_folder_upload,
-              // color: Colors.white,
-              color: Colors.teal,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: background_color1,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          children: [
+            ListTile(
+              leading: const Icon(
+                Icons.drive_folder_upload,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              title: const Text('My Posts'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              onTap: () {},
             ),
-            title: const Text('My Posts'),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_rounded,
-              // color: Colors.white,
-              color: Colors.teal,
+            const Divider(height: 1, indent: 10, endIndent: 10),
+            ListTile(
+              leading: const Icon(
+                Icons.settings,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              title: const Text('Settings'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              onTap: () {},
             ),
-            onTap: () {},
-          ),
-          const Divider(height: 1, indent: 10, endIndent: 10),
-          ListTile(
-            leading: const Icon(
-              Icons.settings,
-              // color: Colors.white,
-              color: Colors.teal,
-            ),
-            title: const Text('Settings'),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_rounded,
-              // color: Colors.white,
-              color: Colors.teal,
-            ),
-            onTap: () {},
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -140,70 +154,74 @@ class IIITDHARWAD extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: background_color1,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        children: [
-          ListTile(
-            leading: const Icon(
-              Icons.web,
-              color: Colors.teal,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: background_color1,
+          borderRadius: BorderRadius.circular(26),
+        ),
+        child: Column(
+          children: [
+            ListTile(
+              leading: const Icon(
+                Icons.web,
+                color: Colors.teal,
+              ),
+              title: const Text('Website'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.teal,
+              ),
+              onTap: () {
+                const link = "https://www.iiitdwd.ac.in/";
+                launch(link);
+              },
             ),
-            title: const Text('Website'),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Colors.teal,
+            const Divider(height: 1, indent: 10, endIndent: 10),
+            ListTile(
+              leading: const Icon(
+                Icons.web_asset,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              title: const Text('AIIMS Portal'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              onTap: () {
+                const link = "https://aims.iiitdwd.ac.in/aims/";
+                launch(link);
+              },
             ),
-            onTap: () {
-              const link = "https://www.iiitdwd.ac.in/";
-              launch(link);
-            },
-          ),
-          const Divider(height: 1, indent: 10, endIndent: 10),
-          ListTile(
-            leading: const Icon(
-              Icons.web_asset,
-              // color: Colors.white,
-              color: Colors.teal,
-            ),
-            title: const Text('AIIMS Portal'),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_rounded,
-              // color: Colors.white,
-              color: Colors.teal,
-            ),
-            onTap: () {
-              const link = "https://aims.iiitdwd.ac.in/aims/";
-              launch(link);
-            },
-          ),
-          const Divider(height: 1, indent: 10, endIndent: 10),
-          ListTile(
-            leading: const Icon(
-              Icons.location_on_outlined,
-              // color: Colors.white,
-              color: Colors.teal,
-            ),
-            title: const Text('Location'),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_rounded,
-              // color: Colors.white,
-              color: Colors.teal,
-            ),
-            onTap: () async {
-              String location = Uri.encodeQueryComponent(
-                  'Indian Institute of Information Technology (IIIT), Dharwad');
-              print(location);
+            const Divider(height: 1, indent: 10, endIndent: 10),
+            ListTile(
+              leading: const Icon(
+                Icons.location_on_outlined,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              title: const Text('Location'),
+              trailing: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                // color: Colors.white,
+                color: Colors.teal,
+              ),
+              onTap: () async {
+                String location = Uri.encodeQueryComponent(
+                    'Indian Institute of Information Technology (IIIT), Dharwad');
+                print(location);
 
-              String url =
-                  'https://www.google.com/maps/search/?api=1&query=$location';
-              await launch(url);
-            },
-          ),
-        ],
+                String url =
+                    'https://www.google.com/maps/search/?api=1&query=$location';
+                await launch(url);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

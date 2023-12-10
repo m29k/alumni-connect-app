@@ -3,10 +3,12 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:alumni_connect_app/styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -38,40 +40,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
           //app bar
-          appBar: AppBar(title: const Text('Profile Screen')),
+          appBar: AppBar(
+            title: const Text('Profile Screen',
+                style: TextStyle(color: Colors.white)),
+            backgroundColor: GlobalVariables.appBarColor,
+            actions: [
+              Container(
+                // height: 50,
+                // width: 200,
+                padding: EdgeInsets.only(left: 20),
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.teal.shade400,
+                      backgroundColor: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.0),
+                      ),
+                    ),
+                    onPressed: () async {
+                      Dialogs.showProgressBar(context);
+                      await APIs.updateActiveStatus(false);
+                      await APIs.auth.signOut().then((value) async {
+                        await GoogleSignIn().signOut().then((value) {
+                          Navigator.pop(context);
 
-          //floating button to log out
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: FloatingActionButton.extended(
-                backgroundColor: Colors.redAccent,
-                onPressed: () async {
-                  //for showing progress dialog
-                  Dialogs.showProgressBar(context);
-
-                  await APIs.updateActiveStatus(false);
-
-                  //sign out from app
-                  await APIs.auth.signOut().then((value) async {
-                    await GoogleSignIn().signOut().then((value) {
-                      //for hiding progress dialog
-                      Navigator.pop(context);
-
-                      //for moving to home screen
-                      Navigator.pop(context);
-
-                      APIs.auth = FirebaseAuth.instance;
-
-                      //replacing home screen with login screen
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const LoginScreen()));
-                    });
-                  });
-                },
-                icon: const Icon(Icons.logout),
-                label: const Text('Logout')),
+                          Navigator.pop(context);
+                          APIs.auth = FirebaseAuth.instance;
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const LoginScreen()));
+                        });
+                      });
+                    },
+                    icon: const Icon(Icons.logout),
+                    label:
+                        const Text('Logout', style: TextStyle(fontSize: 16))),
+              )
+            ],
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              ),
+            ),
           ),
 
           //body
@@ -90,10 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         //profile picture
                         _image != null
-                            ?
-
-                            //local image
-                            ClipRRect(
+                            ? ClipRRect(
                                 borderRadius:
                                     BorderRadius.circular(mq.height * .1),
                                 child: Image.file(File(_image!),
@@ -128,7 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             shape: const CircleBorder(),
                             color: Colors.white,
-                            child: const Icon(Icons.edit, color: Colors.blue),
+                            child: const Icon(Icons.edit,
+                                color: GlobalVariables.mainColor),
                           ),
                         )
                       ],
@@ -153,12 +167,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ? null
                           : 'Required Field',
                       decoration: InputDecoration(
-                          prefixIcon:
-                              const Icon(Icons.person, color: Colors.blue),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          hintText: 'eg. Happy Singh',
-                          label: const Text('Name')),
+                        labelText: 'Name',
+                        hintText: 'Imorz khan',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 232, 250, 248),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12.0,
+                          horizontal: 16.0,
+                        ),
+                      ),
                     ),
 
                     // for adding some space
@@ -172,34 +192,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ? null
                           : 'Required Field',
                       decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.info_outline,
-                              color: Colors.blue),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          hintText: 'eg. Feeling Happy',
-                          label: const Text('About')),
+                        labelText: 'About',
+                        hintText: 'Hey there! Let\'s chat',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 232, 250, 248),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12.0,
+                          horizontal: 16.0,
+                        ),
+                      ),
                     ),
 
                     // for adding some space
                     SizedBox(height: mq.height * .05),
 
                     // update profile button
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          shape: const StadiumBorder(),
-                          minimumSize: Size(mq.width * .5, mq.height * .06)),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          APIs.updateUserInfo().then((value) {
-                            Dialogs.showSnackbar(
-                                context, 'Profile Updated Successfully!');
-                          });
-                        }
-                      },
-                      icon: const Icon(Icons.edit, size: 28),
-                      label:
-                          const Text('UPDATE', style: TextStyle(fontSize: 16)),
+                    Container(
+                      height: 50,
+                      width: 200,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.teal.shade400,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(22.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            APIs.updateUserInfo().then((value) {
+                              Dialogs.showSnackbar(
+                                  context, 'Profile Updated Successfully!');
+                            });
+                          }
+                        },
+                        icon: const Icon(Icons.edit, size: 28),
+                        label: const Text('UPDATE',
+                            style: TextStyle(fontSize: 16)),
+                      ),
                     )
                   ],
                 ),
@@ -238,6 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
+                          elevation: 3,
                           shape: const CircleBorder(),
                           fixedSize: Size(mq.width * .3, mq.height * .15)),
                       onPressed: () async {
@@ -257,13 +293,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.pop(context);
                         }
                       },
-                      child: Image.asset('images/add_image.png')),
+                      child: SvgPicture.asset('assets/icons/gallery.svg',
+                          width: 60)),
 
-                  //take picture from camera button
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           shape: const CircleBorder(),
+                          elevation: 3,
                           fixedSize: Size(mq.width * .3, mq.height * .15)),
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
@@ -282,7 +319,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.pop(context);
                         }
                       },
-                      child: Image.asset('images/camera.png')),
+                      child: SvgPicture.asset('assets/icons/camera.svg',
+                          width: 60)),
                 ],
               )
             ],

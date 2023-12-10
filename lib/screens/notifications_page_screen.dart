@@ -1,3 +1,4 @@
+import 'package:alumni_connect_app/styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -32,9 +33,7 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
     super.initState();
     // Call the fetchNotifications function when the widget is initialized
 
-
     fetchNotifications();
-
   }
 
   @override
@@ -42,25 +41,28 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
     if (_isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Notifications'),
+          backgroundColor: GlobalVariables.appBarColor,
+          title: const Center(child: Text('Notifications')),
         ),
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(),
         ),
       );
     } else if (notifications.isEmpty) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Notifications'),
+          backgroundColor: GlobalVariables.appBarColor,
+          title: const Center(child: Text('Notifications')),
         ),
-        body: Center(
+        body: const Center(
           child: Text('No notifications'),
         ),
       );
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Notifications'),
+          backgroundColor: GlobalVariables.appBarColor,
+          title: const Center(child: Text('Notifications')),
         ),
         body: ListView.builder(
           itemCount: notifications.length,
@@ -74,7 +76,7 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
 
   Widget _buildNotificationCard(Notification notification) {
     return Card(
-      margin: EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
       child: ListTile(
         leading: CircleAvatar(
           backgroundImage: notification.imageUrl != null

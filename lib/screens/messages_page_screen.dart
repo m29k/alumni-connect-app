@@ -60,8 +60,6 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
       //for hiding keyboard when a tap is detected on screen
       onTap: () => FocusScope.of(context).unfocus(),
       child: WillPopScope(
-        //if search is on & back button is pressed then close search
-        //or else simple close current screen on back button click
         onWillPop: () {
           if (_isSearching) {
             setState(() {
