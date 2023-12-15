@@ -4,11 +4,9 @@ import 'package:alumni_connect_app/screens/onboarding_screen.dart';
 import 'package:alumni_connect_app/widgets/frostedGlassCircle.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/services.dart';
 
 import '../../main.dart';
 import '../api/apis.dart';
-import 'auth/login_screen.dart';
 import './main_screen.dart';
 
 //splash screen

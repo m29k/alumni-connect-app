@@ -11,7 +11,6 @@ import '../helper/dialogs.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
-import 'profile_screen.dart';
 
 class MessagesPageScreen extends StatefulWidget {
   const MessagesPageScreen({super.key});

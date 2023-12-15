@@ -28,14 +28,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  //for storing all messages
   List<Message> _list = [];
 
-  //for handling message text changes
   final _textController = TextEditingController();
 
-  //showEmoji -- for storing value of showing or hiding emoji
-  //isUploading -- for checking if image is uploading or not?
   bool _showEmoji = false, _isUploading = false;
 
   @override
@@ -44,8 +40,6 @@ class _ChatScreenState extends State<ChatScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: SafeArea(
         child: WillPopScope(
-          //if emojis are shown & back button is pressed then hide emojis
-          //or else simple close current screen on back button click
           onWillPop: () {
             if (_showEmoji) {
               setState(() => _showEmoji = !_showEmoji);
@@ -55,7 +49,6 @@ class _ChatScreenState extends State<ChatScreen> {
             }
           },
           child: Scaffold(
-            //app bar
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -64,19 +57,13 @@ class _ChatScreenState extends State<ChatScreen> {
               shadowColor: Colors.black,
               backgroundColor: Colors.transparent,
             ),
-
             backgroundColor: const Color.fromARGB(255, 234, 248, 255),
-
-            //body
             body: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  // image: AssetImage("assets/images/splash_bg.jpg"),
                   image: AssetImage("assets/images/bg2.jpg"),
                   fit: BoxFit.cover,
-                  // opacity: 0.5,
                 ),
-                // color: Colors.red.withOpacity(0.5),
               ),
               child: Container(
                 color: Colors.black45,
@@ -132,7 +119,6 @@ class _ChatScreenState extends State<ChatScreen> {
                               child:
                                   CircularProgressIndicator(strokeWidth: 2))),
 
-                    //chat input filed
                     _chatInput(),
 
                     //show emojis on keyboard emoji button click & vice versa
@@ -162,10 +148,6 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _appBar() {
     return InkWell(
         onTap: () {
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (_) => ViewProfileScreen(user: widget.user)));
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -186,14 +168,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     colors: [
                       Colors.white.withOpacity(0.6),
                       Colors.white.withOpacity(0.4),
-                      // Colors.white.withOpacity(0.5),
-                      // Colors.black.withOpacity(0.5),
-                      // Colors.teal.withOpacity(0.5),
                     ],
                     begin: Alignment.topLeft,
-                    // begin: Alignment.topCenter,
                     end: Alignment.topRight,
-                    // end: Alignment.bottomCenter,
                   ),
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -217,13 +194,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 child: Row(
                   children: [
-                    //back button
                     IconButton(
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(Icons.arrow_back, color: Colors.black54),
                     ),
-
-                    //user profile picture
                     ClipRRect(
                       borderRadius: BorderRadius.circular(mq.height * .03),
                       child: CachedNetworkImage(
@@ -236,17 +210,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                 child: Icon(CupertinoIcons.person)),
                       ),
                     ),
-
-                    //for adding some space
                     const SizedBox(width: 10),
-
-                    //user name & last seen time
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //user name
                           Text(
                             list.isNotEmpty ? list[0].name : widget.user.name,
                             style: const TextStyle(
@@ -256,11 +225,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-
-                          //for adding some space
                           const SizedBox(height: 2),
-
-                          //last seen time of user
                           Text(
                             list.isNotEmpty
                                 ? list[0].isOnline
@@ -285,7 +250,6 @@ class _ChatScreenState extends State<ChatScreen> {
             }));
   }
 
-  // bottom chat input field
   Widget _chatInput() {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -306,7 +270,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 color: Colors.white,
                 child: Row(
                   children: [
-                    //emoji button
                     IconButton(
                       onPressed: () {
                         FocusScope.of(context).unfocus();
@@ -318,7 +281,6 @@ class _ChatScreenState extends State<ChatScreen> {
                         size: 25,
                       ),
                     ),
-
                     Expanded(
                         child: TextField(
                       controller: _textController,
@@ -333,17 +295,13 @@ class _ChatScreenState extends State<ChatScreen> {
                           hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none),
                     )),
-
-                    //pick image from gallery button
                     IconButton(
                         onPressed: () async {
                           final ImagePicker picker = ImagePicker();
 
-                          // Picking multiple images
                           final List<XFile> images =
                               await picker.pickMultiImage(imageQuality: 70);
 
-                          // uploading & sending image one by one
                           for (var i in images) {
                             log('Image Path: ${i.path}');
                             setState(() => _isUploading = true);
@@ -353,13 +311,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                         icon: const Icon(Icons.image,
                             color: Colors.grey, size: 26)),
-
-                    //take image from camera button
                     IconButton(
                         onPressed: () async {
                           final ImagePicker picker = ImagePicker();
 
-                          // Pick an image
                           final XFile? image = await picker.pickImage(
                               source: ImageSource.camera, imageQuality: 70);
                           if (image != null) {
@@ -373,8 +328,6 @@ class _ChatScreenState extends State<ChatScreen> {
                         },
                         icon: const Icon(Icons.camera_alt_rounded,
                             color: Colors.grey, size: 26)),
-
-                    //adding some space
                     SizedBox(width: mq.width * .02),
                   ],
                 ),
@@ -382,7 +335,6 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
 
-          //send message button
           MaterialButton(
             onPressed: () {
               if (_textController.text.isNotEmpty) {
@@ -402,8 +354,6 @@ class _ChatScreenState extends State<ChatScreen> {
             padding:
                 const EdgeInsets.only(top: 12, bottom: 10, right: 10, left: 8),
             shape: const CircleBorder(),
-            // color: accent_color1.withOpacity(0.8),
-            // color: accent_color1,
             color: accent_color1,
             elevation: 10,
             child: const Icon(CupertinoIcons.paperplane_fill,

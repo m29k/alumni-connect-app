@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../api/apis.dart';
-import '../models/chat_user.dart';
 import '../widgets/customBottomNavBar.dart';
 import '../screens/home_page_screen.dart';
 import '../screens/members_page_screen.dart';
