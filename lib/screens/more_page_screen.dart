@@ -45,7 +45,6 @@ class MorePageScreen extends StatelessWidget {
                   subtitle: Text(user.about),
                   trailing: const Icon(
                     Icons.arrow_forward_ios_rounded,
-                    // color: Colors.white,
                     color: Colors.teal,
                   ),
                   onTap: () {
@@ -114,13 +113,11 @@ class PERSONAL extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.drive_folder_upload,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               title: const Text('My Posts'),
               trailing: const Icon(
                 Icons.arrow_forward_ios_rounded,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               onTap: () {},
@@ -129,13 +126,11 @@ class PERSONAL extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.settings,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               title: const Text('Settings'),
               trailing: const Icon(
                 Icons.arrow_forward_ios_rounded,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               onTap: () {},
@@ -183,13 +178,11 @@ class IIITDHARWAD extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.web_asset,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               title: const Text('AIIMS Portal'),
               trailing: const Icon(
                 Icons.arrow_forward_ios_rounded,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               onTap: () {
@@ -201,13 +194,11 @@ class IIITDHARWAD extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.location_on_outlined,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               title: const Text('Location'),
               trailing: const Icon(
                 Icons.arrow_forward_ios_rounded,
-                // color: Colors.white,
                 color: Colors.teal,
               ),
               onTap: () async {

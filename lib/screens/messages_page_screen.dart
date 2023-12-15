@@ -13,7 +13,6 @@ import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
 import 'profile_screen.dart';
 
-//home screen -- where all available contacts are shown
 class MessagesPageScreen extends StatefulWidget {
   const MessagesPageScreen({super.key});
 
@@ -22,12 +21,9 @@ class MessagesPageScreen extends StatefulWidget {
 }
 
 class _MessagesPageScreenState extends State<MessagesPageScreen> {
-  // for storing all users
   List<ChatUser> _list = [];
 
-  // for storing searched items
   final List<ChatUser> _searchList = [];
-  // for storing search status
   bool _isSearching = false;
 
   @override
@@ -35,9 +31,6 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
     super.initState();
     APIs.getSelfInfo();
 
-    //for updating user active status according to lifecycle events
-    //resume -- active or online
-    //pause  -- inactive or offline
     SystemChannels.lifecycle.setMessageHandler((message) {
       log('Message: $message');
 
@@ -57,7 +50,6 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      //for hiding keyboard when a tap is detected on screen
       onTap: () => FocusScope.of(context).unfocus(),
       child: WillPopScope(
         onWillPop: () {
@@ -74,7 +66,6 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
           //app bar
           appBar: AppBar(
             leading: const Icon(CupertinoIcons.bubble_left_bubble_right_fill),
-            // backgroundColor: background_color1,
             backgroundColor: GlobalVariables.appBarColor,
             shape: const Border(
               bottom: BorderSide(
@@ -92,9 +83,7 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                         border: InputBorder.none, hintText: 'Name, Email, ...'),
                     autofocus: true,
                     style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
-                    //when search text changes then updated search list
                     onChanged: (val) {
-                      //search logic
                       _searchList.clear();
 
                       for (var i in _list) {
@@ -111,7 +100,6 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                 : const Text('Messages',
                     style: TextStyle(fontSize: page_title_size)),
             actions: [
-              //search user button
               IconButton(
                   onPressed: () {
                     setState(() {
@@ -119,8 +107,6 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                     });
                   },
                   icon: SvgPicture.asset('assets/icons/search.svg')),
-
-              //more features button
               IconButton(
                   onPressed: () {
                     _addChatUserDialog();
@@ -129,35 +115,23 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
             ],
           ),
 
-          //body
           body: StreamBuilder(
             stream: APIs.getMyUsersId(),
-
-            //get id of only known users
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
-                //if data is loading
                 case ConnectionState.waiting:
                 case ConnectionState.none:
                   return const Center(child: CircularProgressIndicator());
 
-                //if some or all data is loaded then show it
                 case ConnectionState.active:
                 case ConnectionState.done:
                   return StreamBuilder(
                     stream: APIs.getAllUsers(
                         snapshot.data?.docs.map((e) => e.id).toList() ?? []),
-
-                    //get only those user, who's ids are provided
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
-                        //if data is loading
                         case ConnectionState.waiting:
                         case ConnectionState.none:
-                        // return const Center(
-                        //     child: CircularProgressIndicator());
-
-                        //if some or all data is loaded then show it
                         case ConnectionState.active:
                         case ConnectionState.done:
                           final data = snapshot.data?.docs;
@@ -196,7 +170,6 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
     );
   }
 
-  // for adding new chat user
   void _addChatUserDialog() {
     String email = '';
 
@@ -205,19 +178,14 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
         builder: (_) => AlertDialog(
               contentPadding: const EdgeInsets.only(
                   left: 24, right: 24, top: 20, bottom: 10),
-
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-
-              //title
               title: Row(
                 children: [
                   SvgPicture.asset('assets/icons/add_user.svg'),
                   Text('  Add User')
                 ],
               ),
-
-              //content
               content: TextFormField(
                 maxLines: null,
                 onChanged: (value) => email = value,
@@ -228,23 +196,16 @@ class _MessagesPageScreenState extends State<MessagesPageScreen> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15))),
               ),
-
-              //actions
               actions: [
-                //cancel button
                 MaterialButton(
                     onPressed: () {
-                      //hide alert dialog
                       Navigator.pop(context);
                     },
                     child: const Text('Cancel',
                         style: TextStyle(
                             color: GlobalVariables.mainColor, fontSize: 16))),
-
-                //add button
                 MaterialButton(
                     onPressed: () async {
-                      //hide alert dialog
                       Navigator.pop(context);
                       if (email.isNotEmpty) {
                         await APIs.addChatUser(email).then((value) {

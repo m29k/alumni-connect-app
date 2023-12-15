@@ -66,7 +66,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    // backgroundColor: Color.fromRGBO(241, 200, 76, 1),
                     backgroundColor: background_color3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(42),
@@ -199,7 +198,6 @@ class OnboardSlide extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  // color: Colors.white,
                   color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -222,7 +220,6 @@ class OnboardSlide extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                  // color: Colors.white,
                   color: Colors.black,
                   decoration: TextDecoration.none,
                   fontFamily: 'Montserrat',

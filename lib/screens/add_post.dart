@@ -41,144 +41,147 @@ class _AddPostScreenState extends State<AddPostScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: 'Title',
-                hintText: 'Enter a detailed description...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                filled: true,
-                fillColor: const Color.fromRGBO(232, 250, 248, 1),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 12.0,
-                  horizontal: 16.0,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: descriptionController,
-              maxLines: 5,
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: Colors.black87,
-              ),
-              decoration: InputDecoration(
-                labelText: 'Description',
-                hintText: 'Enter a detailed description...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(36),
-                ),
-                filled: true,
-                fillColor: const Color.fromARGB(255, 232, 250, 248),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 12.0,
-                  horizontal: 16.0,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/add_pic.svg',
-                ),
-                TextButton(
-                  onPressed: _showImageSourceDialog,
-                  child: const Text(
-                    'Pick Image',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.black,
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  hintText: 'Enter a detailed description...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  filled: true,
+                  fillColor: const Color.fromRGBO(232, 250, 248, 1),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            if (pickedImage != null)
-              Image.file(
-                pickedImage!,
-                height: 100,
-                width: 100,
-                fit: BoxFit.cover,
               ),
-            const SizedBox(height: 30),
-            isUploading
-                ? CircularProgressIndicator()
-                : Container(
-                    width: 200,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (_validateInputs()) {
-                          setState(() {
-                            isUploading = true;
-                          });
-
-                          String? downloadUrl;
-
-                          try {
-                            if (pickedImage != null) {
-                              downloadUrl = await _uploadImageToFirebaseStorage(
-                                pickedImage!,
-                              );
-                            }
-
-                            User? currentUser =
-                                FirebaseAuth.instance.currentUser;
-
-                            if (currentUser != null) {
-                              Post newPost = Post(
-                                title: titleController.text,
-                                description: descriptionController.text,
-                                userName:
-                                    currentUser.displayName ?? 'Anonymous',
-                                imageUrl: downloadUrl,
-                                postedDate: DateTime.now().toString(),
-                                userProfileImageUrl: currentUser.photoURL,
-                              );
-
-                              await _addPostToFirestore(newPost);
-
-                              Navigator.pop(context, newPost);
-                            } else {
-                              print('User not signed in.');
-                            }
-                          } catch (error) {
-                            print('Error uploading data: $error');
-                          } finally {
+              const SizedBox(height: 16),
+              TextField(
+                controller: descriptionController,
+                maxLines: 5,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black87,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  hintText: 'Enter a detailed description...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(36),
+                  ),
+                  filled: true,
+                  fillColor: const Color.fromARGB(255, 232, 250, 248),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/add_pic.svg',
+                  ),
+                  TextButton(
+                    onPressed: _showImageSourceDialog,
+                    child: const Text(
+                      'Pick Image',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              if (pickedImage != null)
+                Image.file(
+                  pickedImage!,
+                  height: 100,
+                  width: 100,
+                  fit: BoxFit.cover,
+                ),
+              const SizedBox(height: 30),
+              isUploading
+                  ? CircularProgressIndicator()
+                  : Container(
+                      width: 200,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_validateInputs()) {
                             setState(() {
-                              isUploading = false;
+                              isUploading = true;
                             });
+
+                            String? downloadUrl;
+
+                            try {
+                              if (pickedImage != null) {
+                                downloadUrl =
+                                    await _uploadImageToFirebaseStorage(
+                                  pickedImage!,
+                                );
+                              }
+
+                              User? currentUser =
+                                  FirebaseAuth.instance.currentUser;
+
+                              if (currentUser != null) {
+                                Post newPost = Post(
+                                  title: titleController.text,
+                                  description: descriptionController.text,
+                                  userName:
+                                      currentUser.displayName ?? 'Anonymous',
+                                  imageUrl: downloadUrl,
+                                  postedDate: DateTime.now().toString(),
+                                  userProfileImageUrl: currentUser.photoURL,
+                                );
+
+                                await _addPostToFirestore(newPost);
+
+                                Navigator.pop(context, newPost);
+                              } else {
+                                print('User not signed in.');
+                              }
+                            } catch (error) {
+                              print('Error uploading data: $error');
+                            } finally {
+                              setState(() {
+                                isUploading = false;
+                              });
+                            }
                           }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.teal.shade400,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(26.0),
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.teal.shade400,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(26.0),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        'Add Post',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w800,
+                        child: const Text(
+                          'Add Post',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );
