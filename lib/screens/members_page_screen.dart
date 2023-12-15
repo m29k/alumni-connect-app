@@ -80,9 +80,7 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
                     border: InputBorder.none, hintText: 'Name, Email, ...'),
                 autofocus: true,
                 style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
-                //when search text changes then updated search list
                 onChanged: (val) {
-                  //search logic
                   _searchList.clear();
 
                   for (var i in _list) {
@@ -104,7 +102,6 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
                     color: Colors.black),
               ),
         actions: [
-          //search user button
           IconButton(
             onPressed: () {
               setState(() {
@@ -138,7 +135,6 @@ class _MembersPageScreenState extends State<MembersPageScreen> {
                 _list.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
-                          // itemCount: users.length,
                           itemCount:
                               _isSearching ? _searchList.length : _list.length,
                           itemBuilder: (context, index) {

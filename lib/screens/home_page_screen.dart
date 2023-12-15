@@ -20,7 +20,6 @@ class Post {
     this.userProfileImageUrl,
   });
 
-  // Use named constructor for better readability
   factory Post.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
@@ -64,9 +63,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      // You can load more posts here if needed
-    }
+        _scrollController.position.maxScrollExtent) {}
   }
 
   @override
@@ -89,7 +86,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
           List<Post>? posts = snapshot.data;
 
-          // Check for no posts
           if (posts == null || posts.isEmpty) {
             return const Center(
               child: Text('No posts available.'),
@@ -123,7 +119,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
           child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 }

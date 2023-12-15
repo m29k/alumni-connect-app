@@ -31,7 +31,6 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
   @override
   void initState() {
     super.initState();
-    // Call the fetchNotifications function when the widget is initialized
 
     fetchNotifications();
   }
@@ -110,7 +109,6 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     CollectionReference posts = FirebaseFirestore.instance.collection('posts');
 
-    // Retrieve new users
     QuerySnapshot userSnapshot =
         await users.where('created_at', isGreaterThan: lastCloseTime).get();
     for (var userDoc in userSnapshot.docs) {
@@ -120,8 +118,6 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
         dateTime: _parseAndFormatDate(userDoc['created_at']),
       ));
     }
-
-    // Retrieve new posts
 
     int lastCloseTimeMillis = int.parse(lastCloseTime!); // Convert to int
 
@@ -144,10 +140,7 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
       ));
     }
 
-    // Sort the notifications by timestamp in descending order
     fetchedNotifications.sort((a, b) => b.dateTime.compareTo(a.dateTime));
-
-    // Update the UI with fetched notifications
 
     setState(() {
       notifications = fetchedNotifications;
@@ -157,20 +150,14 @@ class _NotificationsPageScreenState extends State<NotificationsPageScreen> {
 
   DateTime _parseAndFormatDate(dynamic dateValue) {
     if (dateValue is int) {
-      // Assuming it's a timestamp in milliseconds (e.g., appCloseTime)
       return DateTime.fromMillisecondsSinceEpoch(dateValue);
     } else if (dateValue is String) {
       try {
-        // Try parsing as DateTime format (e.g., postedDate)
         return DateTime.parse(dateValue);
       } catch (e) {
-        // Handle parsing error, assuming it's a different date format
-        // Implement your custom parsing logic here based on the actual format
-        // For now, assuming the format is DateTime.now().millisecondsSinceEpoch.toString()
         return DateTime.fromMillisecondsSinceEpoch(int.parse(dateValue));
       }
     } else {
-      // Handle other cases or throw an error if needed
       throw Exception('Invalid date format: $dateValue');
     }
   }
