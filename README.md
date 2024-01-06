@@ -57,6 +57,8 @@ To run the Alumni Connect App on your local machine, follow these steps:
 
 
 
+
+
 ## Contributing
 
 Feel free to contribute to the Alumni Connect App by submitting bug reports, feature requests, or your own enhancements. Let's make alumni connections stronger!
