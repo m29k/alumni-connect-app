@@ -50,14 +50,6 @@ To run the Alumni Connect App on your local machine, follow these steps:
    flutter run
    ```
 
-## Screenshots
-
-
-
-
-
-
-
 
 ## Contributing
 
