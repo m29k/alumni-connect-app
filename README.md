@@ -29,7 +29,7 @@ To run the Alumni Connect App on your local machine, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone [https://github.com/I-Zz/alumni_connect_app](https://github.com/I-Zz/alumni_connect_app)
+   git clone https://github.com/I-Zz/alumni_connect_app
    ```
 
 2. Navigate to the project directory:
@@ -52,7 +52,7 @@ To run the Alumni Connect App on your local machine, follow these steps:
 
 ## Screenshots
 
-![Chat](screenshots/chat.png) ![Posts](screenshots/posts.png) ![Notifications](screenshots/notifications.png)
+
 
 ## Contributing
 
