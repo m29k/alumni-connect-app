@@ -50,6 +50,32 @@ To run the Alumni Connect App on your local machine, follow these steps:
    flutter run
    ```
 
+## ScreenShots
+  
+
+   <p align="center">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/1d434476-a2aa-4946-888b-26486c7d9feb" width="30%" alt="log">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/080eed85-3a5c-40a8-8361-cc1ca39bbb97" width="30%" alt="posts">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/5c9d90c8-e328-4446-b56a-e4c8c10b1814" width="30%" alt="pposts">
+</p>
+
+<p align="center">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/fe628f1c-3709-46b9-a38c-c841bb68efea" width="30%" alt="add post">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/d76097e8-5951-49a6-bd74-eb080419f895" width="30%" alt="mem">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/25b82ad1-e5ca-4c10-835b-4c027c9d40f5" width="30%" alt="chat">
+</p>
+
+<p align="center">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/9e543e9d-0e12-4328-b2cb-424ae5d034cb" width="30%" alt="noti">
+  <img src="https://github.com/I-Zz/alumni_connect_app/assets/105966781/560365e6-652c-4573-9308-2d7accec505c" width="30%" alt="profile">
+</p>
+
+
+
+
+
+
+
 
 ## Contributing
 
