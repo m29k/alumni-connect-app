@@ -1,6 +1,6 @@
 # Alumni Connect App
 
-Welcome to the Alumni Connect App, a Flutter-based mobile application that facilitates seamless communication and connection among the alumni of our esteemed college. This app comes equipped with features designed to enhance your alumni experience.
+Welcome to the Alumni Connect App, a Flutter-based mobile application that facilitates seamless communication and connection among the alumni of our esteemed college. This app comes equipped with features designed to enhance your alumni experience
 
 ## Features
 
